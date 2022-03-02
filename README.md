@@ -8,8 +8,9 @@
 1. 发布文章
 2. 根据文章的投票进行排序
 
-主要技术栈
-1. 路由处理 gin框架
-2. gorm框架
-3. kafka
-4. elasticsearch
+主要技术点
+- 路由处理 gin框架
+- 日志处理 lumberjack日志组件
+- gorm框架
+- kafka
+- elasticsearch
