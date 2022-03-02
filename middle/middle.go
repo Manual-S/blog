@@ -2,7 +2,7 @@
 package middle
 
 import (
-	"fmt"
+	"blog/global"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +15,6 @@ func AccessMiddle(c *gin.Context) {
 	}()
 
 	defer func() {
-		fmt.Println(c.Request.RemoteAddr)
+		global.Logger.Println("[%s] [%s]", c.Request.RemoteAddr, c.Request.URL)
 	}()
 }

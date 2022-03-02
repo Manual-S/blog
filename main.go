@@ -1,6 +1,7 @@
 package main
 
 import (
+	"blog/global"
 	"blog/middle"
 	"log"
 	"net/http"
@@ -10,11 +11,11 @@ import (
 )
 
 func init() {
-	file, err := os.Create("test.log")
+	file, err := os.Create("info.log")
 	if err != nil {
 		return
 	}
-	global.logger = log.New(file, "", log.LstdFlags|log.Llongfile)
+	global.Logger = log.New(file, "", log.LstdFlags|log.Llongfile)
 }
 
 func main() {
