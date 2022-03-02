@@ -15,6 +15,6 @@ func AccessMiddle(c *gin.Context) {
 	}()
 
 	defer func() {
-		global.Logger.Println("[%s] [%s]", c.Request.RemoteAddr, c.Request.URL)
+		global.Logger.Printf("[%s] [%s]", c.Request.RemoteAddr, c.Request.URL)
 	}()
 }
