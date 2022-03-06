@@ -1,0 +1,12 @@
+Mysql:
+  DBType: mysql
+  Username: root
+  Password: 123456 # 填写自己数据库的密码
+  Host: 127.0.0.1:3306
+  DBName: test
+  Charset: utf8
+
+Redis:
+  Host: 127.0.0.1:6379
+  Password: ""
+  DB: 0

@@ -13,9 +13,10 @@ func NewRouter() *gin.Engine {
 	r.Use(middle.AccessMiddle)
 	apiv1 := r.Group("/api/")
 	{
-		apiv1.GET("articles/list", handler.ApiArticleList) // 获取文章列表
-		apiv1.GET("articles/socrelist", handler.ApiArticleScoreList)
-		apiv1.POST("articles/votes", handler.ApiArticleVote) // 给文章投票
+		apiv1.GET("articles/list", handler.ApiArticleList)           // 获取文章列表
+		apiv1.GET("articles/socrelist", handler.ApiArticleScoreList) // 获取文章的排序列表
+		apiv1.POST("articles/votes", handler.ApiArticleVote)         // 给文章投票
+		apiv1.POST("article/crate", handler.ApiArticleCreate)
 	}
 
 	return r

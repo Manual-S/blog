@@ -3,7 +3,6 @@ package handler
 import (
 	"blog/global"
 	"blog/server"
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -11,10 +10,14 @@ import (
 
 func ApiArticleList(c *gin.Context) {
 	// 调用server层的内容
-	c.JSON(http.StatusOK, gin.H{
-		"code":    0,
-		"message": "success",
-	})
+	list, err := server.NewArticleServer(global.MysqlRW, global.RedisRW).
+		ArticleList()
+	if err != nil {
+		replyErr(c, ErrInterval)
+		return
+	}
+	replySucc(c, list)
+	return
 }
 
 // ApiArticleScoreList 获取文章投票列表 从大到小排序
@@ -47,4 +50,11 @@ func ApiArticleVote(c *gin.Context) {
 		return
 	}
 	replySucc(c, nil)
+}
+
+func ApiArticleCreate(c *gin.Context) {
+	//title := c.PostForm("title")
+	//summary := c.PostForm("summary")
+	//content := c.PostForm("content")
+
 }

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"blog/data/mysql"
 	rClient "blog/data/redis"
 	"blog/global"
 	"fmt"
@@ -10,9 +11,10 @@ import (
 )
 
 type ArticleServer interface {
-	ArticleList() error
+	ArticleList() ([]mysql.Article, error)
 	ArticleVote(titleID string) error
 	ArticleScoreList(start, stop int64) ([]string, error)
+	ArticleCreate() error
 }
 
 type articleServer struct {
@@ -28,8 +30,13 @@ func NewArticleServer(db *gorm.DB, redis *redis.Client) ArticleServer {
 }
 
 // ArticleList 获取文章列表
-func (a *articleServer) ArticleList() error {
-	return nil
+func (a *articleServer) ArticleList() ([]mysql.Article, error) {
+	mysqlClient := mysql.NewArticleClient(global.MysqlRW)
+	list, err := mysqlClient.QueryArticleList()
+	if err != nil {
+		return nil, err
+	}
+	return list, nil
 }
 
 // ArticleVote 向指定文章投票
@@ -54,4 +61,9 @@ func (a *articleServer) ArticleScoreList(start, stop int64) ([]string, error) {
 		return nil, err
 	}
 	return vals, nil
+}
+
+// ArticleCreate 创建文章
+func (a *articleServer) ArticleCreate() error {
+	return nil
 }
