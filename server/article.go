@@ -5,6 +5,7 @@ import (
 	rClient "blog/data/redis"
 	"blog/global"
 	"fmt"
+	"strconv"
 
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"
@@ -14,7 +15,7 @@ type ArticleServer interface {
 	ArticleList() ([]mysql.Article, error)
 	ArticleVote(titleID string) error
 	ArticleScoreList(start, stop int64) ([]string, error)
-	ArticleCreate() error
+	ArticleCreate(title, summary, content string) error
 }
 
 type articleServer struct {
@@ -64,6 +65,22 @@ func (a *articleServer) ArticleScoreList(start, stop int64) ([]string, error) {
 }
 
 // ArticleCreate 创建文章
-func (a *articleServer) ArticleCreate() error {
+func (a *articleServer) ArticleCreate(title, summary, content string) error {
+	mysqlClient := mysql.NewArticleClient(global.MysqlRW)
+	articleId, err := global.SonyFlake.NextID()
+	if err != nil {
+		return err
+	}
+	strconv.FormatUint(articleId, 10)
+	err = mysqlClient.CreateArticle(mysql.Article{
+		ArticleId: strconv.FormatUint(articleId, 10),
+		Title:     title,
+		Summary:   summary,
+		Content:   content,
+	})
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 	return nil
 }

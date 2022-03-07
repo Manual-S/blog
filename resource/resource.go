@@ -2,6 +2,7 @@ package resource
 
 import (
 	"blog/global"
+	"blog/internal"
 	"fmt"
 	"log"
 	"os"
@@ -41,6 +42,11 @@ func Init(configPath string) error {
 		return err
 	}
 
+	// 初始化全局id生成器
+	global.SonyFlake, err = internal.InitID(0)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

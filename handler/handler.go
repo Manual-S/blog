@@ -53,8 +53,16 @@ func ApiArticleVote(c *gin.Context) {
 }
 
 func ApiArticleCreate(c *gin.Context) {
-	//title := c.PostForm("title")
-	//summary := c.PostForm("summary")
-	//content := c.PostForm("content")
+	title := c.PostForm("title")
+	summary := c.PostForm("summary")
+	content := c.PostForm("content")
 
+	server := server.NewArticleServer(global.MysqlRW, global.RedisRW)
+
+	err := server.ArticleCreate(title, summary, content)
+	if err != nil {
+		replyErr(c, ErrInterval)
+		return
+	}
+	replySucc(c, nil)
 }

@@ -16,7 +16,7 @@ func NewRouter() *gin.Engine {
 		apiv1.GET("articles/list", handler.ApiArticleList)           // 获取文章列表
 		apiv1.GET("articles/socrelist", handler.ApiArticleScoreList) // 获取文章的排序列表
 		apiv1.POST("articles/votes", handler.ApiArticleVote)         // 给文章投票
-		apiv1.POST("article/crate", handler.ApiArticleCreate)
+		apiv1.POST("article/crate", handler.ApiArticleCreate)        // 创建文章
 	}
 
 	return r
