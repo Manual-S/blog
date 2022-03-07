@@ -66,3 +66,20 @@ func ApiArticleCreate(c *gin.Context) {
 	}
 	replySucc(c, nil)
 }
+
+// ApiArticleInfo 获取文章详情接口
+func ApiArticleInfo(c *gin.Context) {
+	titleId := c.Query("title_id")
+	server := server.NewArticleServer(global.MysqlRW, global.RedisRW)
+	info, err := server.ArticleInfo(titleId)
+	if err != nil {
+		replyErr(c, ErrInterval)
+		return
+	}
+	replySucc(c, info)
+}
+
+// ApiUserCreate 用户创建接口
+func ApiUserCreate(c *gin.Context) {
+
+}

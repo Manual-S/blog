@@ -16,6 +16,7 @@ type ArticleServer interface {
 	ArticleVote(titleID string) error
 	ArticleScoreList(start, stop int64) ([]string, error)
 	ArticleCreate(title, summary, content string) error
+	ArticleInfo(titleId string) (mysql.Article, error)
 }
 
 type articleServer struct {
@@ -83,4 +84,14 @@ func (a *articleServer) ArticleCreate(title, summary, content string) error {
 		return err
 	}
 	return nil
+}
+
+func (a *articleServer) ArticleInfo(titleId string) (mysql.Article, error) {
+	mysqlClient := mysql.NewArticleClient(global.MysqlRW)
+	articleInfo, err := mysqlClient.QueryArticleInfo(titleId)
+	if err != nil {
+		return mysql.Article{}, err
+	}
+
+	return articleInfo, nil
 }

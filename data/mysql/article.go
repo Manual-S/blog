@@ -5,16 +5,17 @@ import "gorm.io/gorm"
 type ArticleClient interface {
 	QueryArticleList() ([]Article, error)
 	CreateArticle(article Article) error
+	QueryArticleInfo(articleID string) (Article, error)
 }
 
 type Article struct {
 	*gorm.Model
-	ArticleId string
-	Title     string
-	Summary   string
-	Content   string
-	Status    int
-	Votes     int
+	ArticleId string `json:"article_id"`
+	Title     string `json:"title"`
+	Summary   string `json:"summary"`
+	Content   string `json:"content"`
+	Status    int    `json:"status"`
+	Votes     int    `json:"votes"`
 }
 
 func (a *Article) TableName() string {
@@ -43,4 +44,10 @@ func (a *articleClient) QueryArticleList() ([]Article, error) {
 func (a *articleClient) CreateArticle(article Article) error {
 	err := a.db.Create(&article).Error
 	return err
+}
+
+func (a *articleClient) QueryArticleInfo(articleID string) (Article, error) {
+	var aInfo Article
+	err := a.db.Where("article_id = ?", articleID).Find(&aInfo).Error
+	return aInfo, err
 }
