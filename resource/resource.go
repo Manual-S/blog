@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/go-redis/redis"
+	"github.com/olivere/elastic"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -42,6 +43,13 @@ func Init(configPath string) error {
 		return err
 	}
 
+	//
+	esSet := ElasticSearchConfig{}
+	conClient.UnmarshalKey("Elasticsearch", &esSet)
+	global.ElasticRW, err = InitES(esSet)
+	if err != nil {
+		return err
+	}
 	// 初始化全局id生成器
 	global.SonyFlake, err = internal.InitID(0)
 	if err != nil {
@@ -79,6 +87,13 @@ func InitRedis(c RedisConfig) *redis.Client {
 	})
 
 	return client
+}
+
+func InitES(esSet ElasticSearchConfig) (*elastic.Client, error) {
+	client, err := elastic.NewClient(
+		elastic.SetURL(fmt.Sprintf("http://%s", esSet.Host)),
+	)
+	return client, err
 }
 
 // ReadConfig 从yaml中读取配置

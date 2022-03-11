@@ -83,3 +83,15 @@ func ApiArticleInfo(c *gin.Context) {
 func ApiUserCreate(c *gin.Context) {
 
 }
+
+// ApiArticleSearch 根据文章的标题和简介进行搜索
+func ApiArticleSearch(c *gin.Context) {
+	keyWord := c.Query("key_word")
+	server := server.NewArticleServer(global.MysqlRW, global.RedisRW)
+	res, err := server.ArticleSearch(keyWord)
+	if err != nil {
+		replyErr(c, ErrInterval)
+		return
+	}
+	replySucc(c, res)
+}

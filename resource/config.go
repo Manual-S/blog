@@ -15,3 +15,9 @@ type RedisConfig struct {
 	Password string
 	DB       int
 }
+
+type ElasticSearchConfig struct {
+	Host     string
+	User     string
+	Password string
+}

@@ -10,3 +10,7 @@ Redis:
   Host: 127.0.0.1:6379
   Password: ""
   DB: 0
+Elasticsearch:
+  Host: 127.0.0.1:9200
+  User: "elastic"
+  Password: ""

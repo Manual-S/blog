@@ -1,9 +1,11 @@
 package server
 
 import (
+	"blog/data/elasticsearch"
 	"blog/data/mysql"
 	rClient "blog/data/redis"
 	"blog/global"
+	"context"
 	"fmt"
 	"strconv"
 
@@ -17,9 +19,11 @@ type ArticleServer interface {
 	ArticleScoreList(start, stop int64) ([]string, error)
 	ArticleCreate(title, summary, content string) error
 	ArticleInfo(titleId string) (mysql.Article, error)
+	ArticleSearch(keyWord string) ([]elasticsearch.Article, error)
 }
 
 type articleServer struct {
+	ctx         context.Context
 	db          *gorm.DB
 	redisClient *redis.Client
 }
@@ -94,4 +98,13 @@ func (a *articleServer) ArticleInfo(titleId string) (mysql.Article, error) {
 	}
 
 	return articleInfo, nil
+}
+
+func (a *articleServer) ArticleSearch(keyWord string) ([]elasticsearch.Article, error) {
+	esClient := elasticsearch.NewTitleClient(global.ElasticRW)
+	articleList, err := esClient.QueryTitle(a.ctx, keyWord)
+	if err != nil {
+		return nil, err
+	}
+	return articleList, nil
 }

@@ -18,8 +18,9 @@ func NewRouter() *gin.Engine {
 		apiv1.POST("articles/votes", handler.ApiArticleVote)         // 给文章投票
 		apiv1.POST("article/crate", handler.ApiArticleCreate)        // 创建文章
 		apiv1.GET("article/info", handler.ApiArticleInfo)            // 获取文章详情
-
+		apiv1.GET("article/search", handler.ApiArticleSearch)
 		//apiv1.POST("user/create", handler.)
+
 	}
 
 	return r

@@ -7,8 +7,12 @@ import (
 	"github.com/olivere/elastic"
 )
 
+type Article struct {
+	ArticleId string `json:"article_id"`
+}
+
 type TitleClient interface {
-	QueryTitle(ctx context.Context, title string) error
+	QueryTitle(ctx context.Context, title string) ([]Article, error)
 }
 
 type titleClient struct {
@@ -21,6 +25,6 @@ func NewTitleClient(client *elastic.Client) TitleClient {
 	}
 }
 
-func (t *titleClient) QueryTitle(ctx context.Context, title string) error {
-	return nil
+func (t *titleClient) QueryTitle(ctx context.Context, title string) ([]Article, error) {
+	return nil, nil
 }
